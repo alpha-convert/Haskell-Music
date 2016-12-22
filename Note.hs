@@ -74,7 +74,7 @@ succ (Flat F) = F
 succ (Flat G) = G
 
 plus :: Note -> Int -> Note
-plus a n = (foldr (.) id (replicate n Note.succ)) a
+plus a n = (foldr (.) id (replicate (n `mod` 12) Note.succ)) a
 
 --Wrap around
 pred :: Note -> Note
