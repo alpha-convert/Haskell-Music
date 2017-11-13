@@ -2,12 +2,12 @@ module Note where
 data Note = A | B | C | D | E | F | G | Sharp Note | Flat Note 
 
 -- Remove Accidentals
-remAcc :: Note -> Note
-remAcc (Flat C) = B
-remAcc (Sharp B) = C
-remAcc (Flat F) = E
-remAcc (Sharp E) = F
-remAcc n = n
+simpl :: Note -> Note
+simpl (Flat C) = B
+simpl (Sharp B) = C
+simpl (Flat F) = E
+simpl (Sharp E) = F
+simpl n = n
 
 sameNote :: Note -> Note -> Bool
 sameNote A A                    = True
@@ -33,8 +33,8 @@ instance Eq (Note) where
         (==) a' b'
           | sameNote a b = True
           | otherwise = False
-          where a = remAcc a'
-                b = remAcc b'
+          where a = simpl a'
+                b = simpl b'
 
 noteStr :: Note -> String
 noteStr (Sharp n) = noteStr n ++ "#"
@@ -48,7 +48,7 @@ noteStr F = "F"
 noteStr G = "G"
 
 instance Show (Note) where
-        show n = noteStr n
+        show = noteStr
 
 --This all works because These notes for a group under addition isomorphic to Z/12Z
 succ :: Note -> Note
@@ -79,5 +79,3 @@ plus a n = (foldr (.) id (replicate (n `mod` 12) Note.succ)) a
 --Wrap around
 pred :: Note -> Note
 pred a = a `plus` 11
-
-
